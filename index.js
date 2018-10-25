@@ -3,30 +3,24 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const Blogi = require('./models/blogi')
+const morgan = require('morgan')
+const blogitRouter = require('./controllers/blogit')
+
 
 app.use(cors())
 app.use(bodyParser.json())
 
-
-
-app.get('/api/blogs', (request, response) => {
-  Blogi
-    .find({})
-    .then(blogs => {
-      response.json(blogs)
-    })
+morgan.token('tietoja', (req) => {
+  return JSON.stringify(req.body)
 })
+  
+app.use(morgan(':method :url :tietoja :status :res[content-length] - :response-time ms'))
 
-app.post('/api/blogs', (request, response) => {
-  const blog = new Blogi(request.body)
+app.use('/api/blogs', blogitRouter)
 
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-})
+
+
+
 
 const PORT = 3003
 app.listen(PORT, () => {

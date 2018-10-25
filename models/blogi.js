@@ -5,7 +5,14 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const mongoUrl = process.env.MONGODB_URI
 
-mongoose.connect(mongoUrl)
+mongoose
+  .connect(mongoUrl, { useNewUrlParser: true })
+  .then( () => {
+    console.log('connected to database')
+  })
+  .catch( err => {
+    console.log(err)
+  })
 
 const Blogi = mongoose.model('Blog', {
   title: String,
