@@ -20,5 +20,5 @@ const Blogi = mongoose.model('Blog', {
   url: String,
   likes: Number
 })
-  
+
 module.exports = Blogi

@@ -1,4 +1,3 @@
-const http = require('http')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -13,14 +12,10 @@ app.use(bodyParser.json())
 morgan.token('tietoja', (req) => {
   return JSON.stringify(req.body)
 })
-  
+
 app.use(morgan(':method :url :tietoja :status :res[content-length] - :response-time ms'))
 
 app.use('/api/blogs', blogitRouter)
-
-
-
-
 
 const PORT = 3003
 app.listen(PORT, () => {
