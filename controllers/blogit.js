@@ -11,25 +11,59 @@ const formatBlogi = (blogi) => {
   }
 }
 
-blogitRouter.get('/', (request, response) => {
-  Blogi
-    .find({})
-    .then(blogs => {
-      response.json(blogs.map(formatBlogi))
-    })
+blogitRouter.get('/', async (request, response) => {
+  try {
+    const blogs = await Blogi.find({})
+    response.json(blogs.map(formatBlogi))
+  } catch(exception) {
+    console.log(exception)
+    response.status(500).json({ error: 'pilalla' })
+  }
 })
 
-blogitRouter.post('/', (request, response) => {
-  const blog = new Blogi(request.body)
+blogitRouter.post('/', async (request, response) => {
+  try {
+    let blog = new Blogi(request.body)
 
-  blog
-    .save()
-    .then(result => {
-      return formatBlogi(result)
-    })
-    .then(formatoituBlogi => {
-      response.json(formatoituBlogi)
-    })
+    if((blog.title === undefined || blog.title === null || blog.title === '') && (blog.url === undefined || blog.url === null || blog.url === '')){
+      return response.status(400).json({ error: 'content missing' })
+    }
+
+    if(blog.likes === null || blog.likes === undefined || blog.likes === '') {
+      blog.likes = 0
+    }
+
+    const savedBlog = await blog.save()
+    response.json(formatBlogi(savedBlog))
+
+  } catch (exception) {
+    console.log(exception)
+    response.status(500).json({ error: 'pilalla' })
+  }
+})
+
+blogitRouter.delete('/:id', async (request, response) => {
+  try{
+    await Blogi.findByIdAndRemove(request.params.id)
+
+    response.status(204).end()
+  } catch (exception) {
+    console.log(exception)
+    response.status(400).send({ error: 'malformatted id' })
+  }
+})
+
+blogitRouter.put('/:id', async (request,response) => {
+  try {
+    const blog = new Blogi(request.body)
+
+    const updatedBlog = await Blogi.findByIdAndUpdate(request.params.id,{ $set: { title: blog.title, author: blog.author, url: blog.url, likes: blog.likes } }, { new: true })
+
+    response.json(formatBlogi(updatedBlog))
+  } catch (exception) {
+    console.log(exception)
+    response.status(400).send({ error: 'malformatted id' })
+  }
 })
 
 module.exports = blogitRouter
