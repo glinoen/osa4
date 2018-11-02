@@ -7,6 +7,7 @@ const blogitRouter = require('./controllers/blogit')
 const config = require('./utils/config')
 const mongoose = require('mongoose')
 const http = require('http')
+const usersRouter = require('./controllers/users')
 
 mongoose
   .connect(config.mongoUrl,{ useNewUrlParser: true })
@@ -27,6 +28,7 @@ morgan.token('tietoja', (req) => {
 app.use(morgan(':method :url :tietoja :status :res[content-length] - :response-time ms'))
 
 app.use('/api/blogs', blogitRouter)
+app.use('/api/users', usersRouter)
 
 const server = http.createServer(app)
 

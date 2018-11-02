@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs
+
+content-type: application/json
+
+{
+    "title": "oho",
+    "author": "juhiD",
+    "url": "www.qwerty.com",
+    "likes": 55 
+}
