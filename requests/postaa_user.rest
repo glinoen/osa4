@@ -1,10 +1,9 @@
-POST http://localhost:3001/api/blogs
-
+POST http://localhost:3001/api/users
 content-type: application/json
 
 {
-    "title": "oho",
-    "author": "juhiD",
-    "url": "www.qwerty.com",
-    "likes": 55 
+    "username": "wild1",
+    "name": "Wille Dikkilä",
+    "password": "wild1ssrules",
+    "adult": false
 }
