@@ -2,8 +2,9 @@ PUT http://localhost:3001/api/blogs/5bd1bf6bf088099d6762bbe7
 content-type: application/json
 
 {
-    "title": "oho",
+    "title": "näkyyköHÄn",
     "author": "juhiD",
     "url": "www.qwerty.com",
-    "likes": 55 
+    "likes": 55,
+    "userId": "5bdc5a84b6e89f27cc0c9a50"
 }
